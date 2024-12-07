@@ -1,2 +1,2 @@
 # aoc-solutions
-Solutions to Advent of Code starting in 2024
+Solutions for Advent of Code puzzles starting with the December 2024 contest.
