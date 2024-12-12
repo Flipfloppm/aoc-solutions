@@ -4,6 +4,11 @@
 #include <vector>
 using namespace std;
 
+/*
+ *  Found a few edge cases:
+ *  Case where we remove the one at idx 0
+ *  Case where we can't extrapolate increase/decrease from just two numbers
+ */
 int main(int argc, char *argv[]) { 
     ifstream input(argv[1]);
 
@@ -17,62 +22,75 @@ int main(int argc, char *argv[]) {
     int idx = 1;
 
     while (getline(input, line)) { 
-        cout << "===" << endl;
         istringstream iss(line);
         vector<int> currLine;
         int num;
         while (iss >> num) { 
             currLine.push_back(num);
         }
-        bool removed = false;
         bool valid = true;
-        bool increasing;
+        bool increasing = false;
         if (currLine.size() > 1) { 
-            if ((currLine[currLine.size() - 1] - currLine[0]) > 0) { 
+            int numIncreasing = 0;
+            for (int i = 1; i < currLine.size(); i++) { 
+                int diff = currLine[i] - currLine[i - 1];
+                if (diff > 0) { 
+                    numIncreasing += 1;
+                } 
+            }
+            // if we have more than 1 increasing pair, then either it is wrong
+            // or it is increasing, both cases accounted for
+            if (numIncreasing > 1) { 
                 increasing = true;
-            } else {
-                increasing = false;
             }
         } 
-
-        cout << idx << ": ";
+        // first we check if the array without modification is safe
         for (int i = 1; i < currLine.size(); i++) {
-            cout << currLine[i] << ' ';
             int diff = currLine[i] - currLine[i - 1];
             if ((diff > 0 && !increasing) || (diff < 0 && increasing)) {
-                if (removed) {
                     valid = false;
                     break;
-                } else {
-                    cout << "removing " << currLine[i] << ' ';
-                    currLine.erase(currLine.begin() + i);
-                    removed = true;
-                    // dec idx because we remove one
-                    i -= 1;
-                }
             } 
 
             if (abs(diff) == 0 || abs(diff) > 3) {
-                if (removed) {
                     valid = false;
                     break;
-                } else {
-                    cout << "removing " << currLine[i] << ' ';
-                    currLine.erase(currLine.begin() + i);
-                    removed = true;
-                    // dec idx because we remove one
-                    i -= 1;
-                }
             }
         }
 
         if (valid) { 
             sol += 1;
-        } else {
-            cout << "INVALID" << endl;
+            idx += 1;
+            continue;
         }
+        // brute force and remove each index and check if they are safec
+        bool valid2 = true;
+        for (int j = 0; j < currLine.size(); j++) {
+            valid2 = true;
+            vector<int> currLine2 (currLine);
+            currLine2.erase(currLine2.begin() + j);
+            for (int i = 1; i < currLine2.size(); i++) {
+                int diff = currLine2[i] - currLine2[i - 1];
+                if ((diff > 0 && !increasing) || (diff < 0 && increasing)) {
+                        valid2 = false;
+                        break;
+                } 
+
+                if (abs(diff) == 0 || abs(diff) > 3) {
+                        valid2 = false;
+                        break;
+                }
+            }
+            
+            if (valid2) { 
+                break;
+            }
+        }
+
+        if (valid2) { 
+            sol += 1;
+        } 
         idx += 1;
-        cout << endl;
     }
 
     cout << sol << endl;
