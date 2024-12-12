@@ -8,13 +8,6 @@ using namespace std;
 unordered_map<int, unordered_map<char, int> > transition_map;
 
 void init_transition_map() { 
-    transition_map[0] = unordered_map<char, int>();
-    transition_map[1] = unordered_map<char, int>();
-    transition_map[2] = unordered_map<char, int>();
-    transition_map[3] = unordered_map<char, int>();
-    transition_map[4] = unordered_map<char, int>();
-    transition_map[5] = unordered_map<char, int>();
-    transition_map[6] = unordered_map<char, int>();
     transition_map[0]['m'] = 1;
     transition_map[1]['u'] = 2;
     transition_map[2]['l'] = 3;
