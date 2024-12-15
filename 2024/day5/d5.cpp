@@ -74,10 +74,10 @@ int main() {
             encountered.push_back(v[i]);
         }
         if (valid) { 
-            double idx = v.size() / 2;
+            double idx = v.size() / 2.0;
             double truncated = trunc(idx);
             cout << v[truncated] << endl;
-            sol += stoi(v[truncated]);
+        
         }
     }
     cout << sol << endl;
