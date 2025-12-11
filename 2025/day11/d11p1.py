@@ -1,4 +1,4 @@
-f = open("sample.txt", "r")
+f = open("input.txt", "r")
 lines = f.read().splitlines()
 graph = {}
 sol = 0
@@ -9,19 +9,14 @@ for line in lines:
     nbrs = nbrs.split(" ")
     graph[key] = nbrs
 
-paths = []
-def dfs(curr, path):
-    path.append(curr)
+def dfs(curr):
+    global sol
     if curr == "out":
-        paths.append(path)
+        sol += 1
     else:
         for nbr in graph[curr]:
-            dfs(nbr, path)
-    path.pop()
+            dfs(nbr)
 
-dfs("svr", [])
-for path in paths:
-    if "fft" in path and "dac" in path:
-        sol += 1
+dfs("you")
 print("Final Solution: ", sol)
 
